@@ -256,54 +256,33 @@
 	 * 电源树：dc_12v -> vcc3v3_sys -> 各PWM电源节点
 	 * PWM分配：pwm1(GPU)、pwm2(NPU)、pwm3(VPU)，参数对齐RK3568芯片规格
 	 ******************************************************************************************/
-	// GPU电源：pwm1，电压范围850mV~1000mV（匹配gpu_opp_table的电压要求）
-	vdd_gpu: vdd-gpu {
+/* 合并 GPU 和 NPU 电源，使用硬件 pwm1 驱动 */
+	vdd_gpu_npu: vdd-gpu-npu {
 		compatible = "pwm-regulator";
-		rockchip,pwm_id = <1>;
-		rockchip,pwm_voltage = <900000>;
-		pwms = <&pwm1 0 25000 1>; // 25000ns = 40KHz PWM频率，与CPU保持一致
-		regulator-name = "vdd_gpu";
-		regulator-min-microvolt = <850000>;  // 最低850mV，匹配GPU OPP最低电压
-		regulator-max-microvolt = <1000000>; // 最高1000mV，匹配GPU OPP最高电压
-		regulator-init-microvolt = <900000>; // 初始900mV，平衡功耗与性能
-		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
+		pwms = <&pwm1 0 25000 1>; 
+		regulator-name = "vdd_gpu_npu";
+		regulator-min-microvolt = <850000>;
+		regulator-max-microvolt = <1000000>;
+		regulator-init-microvolt = <900000>;
 		regulator-always-on;
 		regulator-boot-on;
+		regulator-settle-up-time-us = <250>;
+		status = "okay";
 		vin-supply = <&vcc3v3_sys>;
 	};
 
-	// NPU电源：pwm2，电压范围850mV~1000mV（匹配npu_opp_table的电压要求）
-	vdd_npu: vdd-npu {
-		compatible = "pwm-regulator";
-		rockchip,pwm_id = <2>;
-		rockchip,pwm_voltage = <900000>;
-		pwms = <&pwm2 0 25000 1>;
-		regulator-name = "vdd_npu";
-		regulator-min-microvolt = <850000>;  // 最低850mV，匹配NPU OPP最低电压
-		regulator-max-microvolt = <1000000>; // 最高1000mV，匹配NPU OPP最高电压
-		regulator-init-microvolt = <900000>; // 初始900mV，与前序DTSI配置一致
-		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
-		regulator-always-on;
-		regulator-boot-on;
-		vin-supply = <&vcc3v3_sys>;
-	};
-
-	// VPU电源：pwm3，电压范围850mV~950mV（RK3568 VPU推荐电压范围）
+/* VPU (Logic) 独立电源，使用硬件 pwm2 驱动 */
 	vdd_logic: vdd-logic {
 		compatible = "pwm-regulator";
-		rockchip,pwm_id = <3>;
-		rockchip,pwm_voltage = <900000>;
-		pwms = <&pwm3 0 25000 1>;
+		pwms = <&pwm2 0 25000 1>;
 		regulator-name = "vdd_logic";
-		regulator-min-microvolt = <850000>;  // VPU最低工作电压
-		regulator-max-microvolt = <950000>;   // VPU最高工作电压
-		regulator-init-microvolt = <900000>; // 初始900mV，通用稳定值
-		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
+		regulator-min-microvolt = <850000>;
+		regulator-max-microvolt = <950000>;
+		regulator-init-microvolt = <900000>;
 		regulator-always-on;
 		regulator-boot-on;
+		regulator-settle-up-time-us = <250>;
+		status = "okay";
 		vin-supply = <&vcc3v3_sys>;
 	};
 
@@ -662,15 +641,19 @@
 };
 
 &pwm1 {
-	status = "okay"; // GPU专用，启用
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm1m0_pins>; // 强制切换引脚到 PWM 模式
+	status = "okay";
 };
 
 &pwm2 {
-	status = "okay"; // NPU专用，启用（原disabled，修改为okay）
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm2m0_pins>; // 强制切换引脚到 PWM 模式
+	status = "okay";
 };
 
 &pwm3 {
-	status = "okay"; // VPU专用，启用（原disabled，修改为okay）
+	status = "disabled"; 
 };
 
 &pwm4 {
@@ -701,7 +684,7 @@
  * GPU配置：绑定PWM电源vdd_gpu，启用硬件
  ******************************************************************************************/
 &gpu {
-	mali-supply = <&vdd_gpu>; // 绑定新增的PWM GPU电源
+	mali-supply = <&vdd_gpu_npu>; // 绑定新增的PWM GPU电源
 	status = "okay";
 };
 
@@ -710,11 +693,6 @@
  ******************************************************************************************/
 #define DT_ENABLE_NPU 1
 
-&vdd_npu {
-	regulator-init-microvolt = <900000>;
-	regulator-always-on;
-	regulator-boot-on;
-};
 
 &bus_npu {
 	bus-supply = <&vdd_logic>;
@@ -723,7 +701,7 @@
 };
 
 &rknpu {
-	rknpu-supply = <&vdd_npu>; // 绑定新增的PWM NPU电源
+	rknpu-supply = <&vdd_gpu_npu>; // 绑定新增的PWM NPU电源
 	status = "okay";
 };
 
@@ -755,8 +733,8 @@
 };
 
 &rkvenc {
-	venc-supply = <&vdd_logic>; // 绑定新增的PWM VPU电源
 	status = "okay";
+	venc-supply = <&vdd_logic>; /* 修改此处 */
 };
 
 &rkvenc_mmu {
@@ -764,10 +742,18 @@
 };
 
 &rkvdec {
-	vdec-supply = <&vdd_logic>; // 绑定新增的PWM VPU电源
-	rockchip,disable-auto-freq;
-	assigned-clock-rates = <396000000>, <396000000>, <396000000>, <600000000>;
-	status = "okay";
+    status = "okay";
+    vdec-supply = <&vdd_logic>;
+	
+	/* 补全复位信号名称 */
+	resets = <&cru SRST_A_RKVDEC>, <&cru SRST_H_RKVDEC>,
+			 <&cru SRST_RKVDEC_CA>, <&cru SRST_RKVDEC_CORE>,
+			 <&cru SRST_RKVDEC_HEVC_CA>,
+			 <&cru SRST_A_VPU_NIU>, <&cru SRST_H_VPU_NIU>;
+	
+	reset-names = "video_a", "video_h", "video_cabac",
+				  "video_core", "video_hevc_cabac",
+				  "shared_niu_a", "shared_niu_h";
 };
 
 &rkvdec_mmu {
