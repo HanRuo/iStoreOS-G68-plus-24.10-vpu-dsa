@@ -720,6 +720,7 @@
 
 &rkvenc {
 	status = "okay";
+	operating-points-v2 = <&rkvdec_opp_table>;
 	venc-supply = <&vdd_logic>; /* 修改此处 */
 };
 
@@ -730,6 +731,7 @@
 &rkvdec {
     status = "okay";
     vdec-supply = <&vdd_logic>;
+	operating-points-v2 = <&rkvdec_opp_table>;
 	
 	/* 补全复位信号名称 */
 	resets = <&cru SRST_A_RKVDEC>, <&cru SRST_H_RKVDEC>,
