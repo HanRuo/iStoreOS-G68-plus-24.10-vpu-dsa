@@ -672,8 +672,28 @@
  * GPU配置：绑定PWM电源vdd_gpu，启用硬件
  ******************************************************************************************/
 &gpu {
-	mali-supply = <&vdd_gpu_npu>; // 绑定新增的PWM GPU电源
 	status = "okay";
+	mali-supply = <&vdd_gpu_npu>;
+	
+	/* 1. 修复中断丢失 (解决 ENXIO 错误) */
+	interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
+				 <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
+				 <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
+	interrupt-names = "job", "mmu", "gpu";
+
+	/* 2. 引用频率表 (缓解 Power Model 错误) */
+	/* 注意：确保你的包含文件中定义了 gpu_opp_table */
+	operating-points-v2 = <&gpu_opp_table>;
+
+	/* 3. 可选：如果强迫症想消除 power_model 报错，可以加上简易系数 */
+	/* 这只是给驱动一个默认值，防止它报 Error -22 */
+	power_model: power-model {
+		compatible = "arm,mali-simple-power-model";
+		static-coefficient = <411>;
+		dynamic-coefficient = <733>;
+		ts = <32000 4700 (-494) 2>;
+		thermal-zone = "gpu-thermal";
+	};
 };
 
 /******************************************************************************************
