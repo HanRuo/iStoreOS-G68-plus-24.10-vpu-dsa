@@ -256,6 +256,7 @@
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-settle-up-time-us = <250>;
+		regulator-ramp-delay = <8000>;
 		status = "okay";
 		vin-supply = <&vcc3v3_sys>;
 	};
@@ -271,6 +272,7 @@
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-settle-up-time-us = <250>;
+		regulator-ramp-delay = <6000>;
 		status = "okay";
 		vin-supply = <&vcc3v3_sys>;
 	};
