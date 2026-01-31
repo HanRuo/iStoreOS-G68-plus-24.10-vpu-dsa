@@ -31,8 +31,22 @@
 
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
-		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFI0 rootwait cma=512M";
+		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFI0 rootwait";
 	};
+
+	reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        linux,cma {
+            compatible = "shared-dma-pool";
+            reusable;
+            size = <0x0 0x20000000>;
+            linux,cma-default;
+            alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
+        };
+    };
 
 	fiq-debugger {
 		compatible = "rockchip,fiq-debugger";
