@@ -39,12 +39,20 @@ reserved-memory {
 		#size-cells = <2>;
 		ranges;
 
-		/* 这里的 mpp_cma 是一个标签，供下方引用 */
-		mpp_cma: linux,cma {
+		/* 1. 公共大池子：维持 512MB，作为系统默认，保证 SSD/WiFi 性能 */
+		linux,cma {
 			compatible = "shared-dma-pool";
 			reusable;
-			size = <0x0 0x20000000>;
-			linux,cma-default;
+			size = <0x0 0x20000000>; /* 512MB */
+			linux,cma-default; /* 系统默认都会来这里抢 */
+			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
+		};
+
+		/* 2. 多媒体专属特区：划出 128MB-256MB，不设为 default，防止被 SSD 抢走 */
+		mpp_reserved: mpp-reserved {
+			compatible = "shared-dma-pool";
+			reusable;
+			size = <0x0 0x10000000>; /* 256MB */
 			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
 		};
 	};
@@ -1140,6 +1148,7 @@ reserved-memory {
 	operating-points-v2 = <&rkvdec_opp_table>;
 	vdec-supply = <&vdd_logic>;
 	status = "okay";
+	memory-region = <&mpp_reserved>;
 	
 	/* 补全复位信号名称 */
 	resets = <&cru SRST_A_RKVDEC>, <&cru SRST_H_RKVDEC>,
@@ -1306,12 +1315,12 @@ reserved-memory {
 
 &mpp_srv {
 	status = "okay";
-	memory-region = <&mpp_cma>;
+	memory-region = <&mpp_reserved>;
 };
 
 &iep {
 	status = "okay";
-	memory-region = <&mpp_cma>;
+	memory-region = <&mpp_reserved>;
 };
 
 &iep_mmu {
