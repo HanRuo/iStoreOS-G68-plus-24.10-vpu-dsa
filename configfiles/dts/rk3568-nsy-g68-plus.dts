@@ -1116,10 +1116,6 @@ reserved-memory {
 	status = "okay";
 };
 
-&vpu {
-	status = "okay";
-};
-
 &vdpu {
 	status = "okay";
 };
