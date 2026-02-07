@@ -1182,7 +1182,7 @@ reserved-memory {
 };
 
 &rknpu_mmu {
-	status = "disabled";
+	status = "okay";
 };
 
 &bus_npu {
