@@ -1165,6 +1165,12 @@ reserved-memory {
     regulator-ramp-delay = <1000>;
 };
 
+&vdd_logic {
+    /* Logic 电压通常决定了内存接口和内部总线的稳定性 */
+    voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
+    regulator-ramp-delay = <1000>;
+};
+
 &rknpu_mmu {
 	status = "okay";
 };
