@@ -1136,8 +1136,19 @@ reserved-memory {
 
 &rknpu {
 	operating-points-v2 = <&npu_opp_table>;
+	clocks = <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
+	clock-names = "clk", "aclk", "hclk";
+	interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+    interrupt-names = "npu_irq", "mmu";
+    /delete-property/ nvmem-cells;
+    /delete-property/ nvmem-cell-names;
 	rknpu-supply = <&vdd_npu>;
 	status = "okay";
+};
+
+&vdd_npu {
+    voltage-table = <1100000 0>, <1000000 33>, <900000 66>, <800000 100>;
+    regulator-ramp-delay = <1000>;
 };
 
 &rknpu_mmu {
