@@ -271,6 +271,8 @@ reserved-memory {
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
 		regulator-ramp-delay = <8000>;
+		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
+		regulator-ramp-delay = <1000>;
 		regulator-always-on;
 		regulator-boot-on;
 		vin-supply = <&vcc3v3_sys>;
@@ -288,6 +290,8 @@ reserved-memory {
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
 		regulator-ramp-delay = <8000>;
+		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
+		regulator-ramp-delay = <1000>;
 		regulator-always-on;
 		regulator-boot-on;
 		vin-supply = <&vcc3v3_sys>;
@@ -305,6 +309,8 @@ reserved-memory {
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
 		regulator-ramp-delay = <8000>;
+		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
+		regulator-ramp-delay = <1000>;
 		regulator-always-on;
 		regulator-boot-on;
 		vin-supply = <&vcc3v3_sys>;
@@ -1144,31 +1150,6 @@ reserved-memory {
     /delete-property/ nvmem-cell-names;
 	rknpu-supply = <&vdd_npu>;
 	status = "okay";
-};
-
-&vdd_npu {
-    /* 极性是 inverse，所以占空比越大电压越高 */
-    /* 电压(uV)  占空比(ns) */
-    voltage-table = <800000  0>,
-                    <900000  8250>,
-                    <1000000 16500>,
-                    <1100000 25000>;
-    regulator-ramp-delay = <1000>;
-};
-
-&vdd_gpu {
-    /* 同理，给 GPU 建立映射表 */
-    voltage-table = <800000  0>,
-                    <900000  8250>,
-                    <1000000 16500>,
-                    <1100000 25000>;
-    regulator-ramp-delay = <1000>;
-};
-
-&vdd_logic {
-    /* Logic 电压通常决定了内存接口和内部总线的稳定性 */
-    voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
-    regulator-ramp-delay = <1000>;
 };
 
 &rknpu_mmu {
