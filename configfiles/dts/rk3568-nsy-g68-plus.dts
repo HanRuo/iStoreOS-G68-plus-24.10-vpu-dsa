@@ -1148,7 +1148,7 @@ reserved-memory {
 
     /delete-property/ nvmem-cells;
     /delete-property/ nvmem-cell-names;
-    rockchip,iommu-enabled = <0>; 
+
 	rknpu-supply = <&vdd_npu>;
 	iommus = <&rknpu_mmu>;
 	status = "okay";
