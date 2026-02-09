@@ -502,7 +502,7 @@ reserved-memory {
 		/* nvmem-cell-names = "leakage", "mbist-vmin", "opp-info", "specification_serial_number", "remark_spec_serial_number"; */
 		/* rockchip,supported-hw; */
 		rockchip,max-volt = <1100000>;
-		rockchip,init-freq = <300000000>;
+		rockchip,init-freq = <200000000>;
 		/* rockchip,temp-hysteresis = <5000>; */
 		/* rockchip,low-temp = <0>; */
 		/* rockchip,low-temp-adjust-volt = <0 1000 50000>; */
@@ -515,11 +515,11 @@ reserved-memory {
 			opp-hz = /bits/ 64 <200000000>;
 			opp-microvolt = <800000>;
 		};
-		/* opp-300000000 { */
+		opp-300000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
-			/* opp-hz = /bits/ 64 <297000000>; */
-			/* opp-microvolt = <850000 850000 1000000>; */
-		/* }; */
+			opp-hz = /bits/ 64 <297000000>; 
+			opp-microvolt = <850000>;
+		};
 		opp-400000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
 			opp-hz = /bits/ 64 <400000000>;
