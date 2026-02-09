@@ -513,7 +513,7 @@ reserved-memory {
 		opp-200000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
 			opp-hz = /bits/ 64 <200000000>;
-			opp-microvolt = <900000>;
+			opp-microvolt = <800000>;
 		};
 		/* opp-300000000 { */
 			/* opp-supported-hw = <0xfb 0xffff>; */
@@ -523,12 +523,12 @@ reserved-memory {
 		opp-400000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
 			opp-hz = /bits/ 64 <400000000>;
-			opp-microvolt = <1000000>;
+			opp-microvolt = <900000>;
 		};
 		opp-600000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
 			opp-hz = /bits/ 64 <600000000>;
-			opp-microvolt = <1100000>;
+			opp-microvolt = <1000000>;
 		};
 
 
@@ -1150,9 +1150,9 @@ reserved-memory {
 	status = "okay";
 };
 
-&rknpu_mmu {
+/* &rknpu_mmu {
 	status = "disabled";
-};
+}; */
 
 &bus_npu {
 	operating-points-v2 = <&bus_npu_opp_table>;
