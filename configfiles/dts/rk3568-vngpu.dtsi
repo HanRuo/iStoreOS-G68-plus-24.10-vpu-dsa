@@ -179,9 +179,9 @@
 
 	rknpu: npu@fde40000 {
 		compatible = "rockchip,rk3568-rknpu", "rockchip,rknpu";
-		reg = <0x0 0xfde40000 0x0 0x8000>;
-		interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>/* , <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH> */;
-		interrupt-names = "npu_irq"/* , "mmu" */;
+		reg = <0x0 0xfde40000 0x0 0x10000>;
+		interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "npu_irq", "mmu";
 		clocks = <&scmi_clk 2>, <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
 		clock-names = "scmi_clk", "clk", "aclk", "hclk";
 		assigned-clocks = <&cru CLK_NPU>;
@@ -195,7 +195,7 @@
 		rockchip,init-freq = <400000000>;
 		
 		operating-points-v2 = <&npu_opp_table>;
-		/* iommus = <&rknpu_mmu>; */
+		iommus = <&rknpu_mmu>;
 		status = "disabled";
 	};
 
@@ -326,7 +326,7 @@
 		};
 	};
 
-	/* rknpu_mmu: iommu@fde4b000 {
+	rknpu_mmu: iommu@fde4b000 {
 		compatible = "rockchip,rk3568-iommu", "rockchip,iommu-v2";
 		reg = <0x0 0xfde4b000 0x0 0x40>;
 		interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
@@ -336,7 +336,7 @@
 		power-domains = <&power RK3568_PD_NPU>;
 		#iommu-cells = <0>;
 		status = "disabled";
-	}; */
+	};
 
 	sram: sram@fdcc0000 {
 		compatible = "mmio-sram";
