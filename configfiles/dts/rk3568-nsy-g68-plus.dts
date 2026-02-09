@@ -270,7 +270,7 @@ reserved-memory {
 		regulator-init-microvolt = <900000>;
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
+
 		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
 		regulator-ramp-delay = <1000>;
 		regulator-always-on;
@@ -284,12 +284,13 @@ reserved-memory {
 		pwms = <&pwm1 0 25000 1>;
 		/* pwm-dutycycle-range = <0 100>; */
 		regulator-name = "vdd_npu";
+		regulator-compatible = "vdd_npu";
 		regulator-min-microvolt = <800000>;
 		regulator-max-microvolt = <1100000>;
 		regulator-init-microvolt = <900000>;
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
+
 		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
 		regulator-ramp-delay = <1000>;
 		regulator-always-on;
@@ -308,7 +309,6 @@ reserved-memory {
 		regulator-init-microvolt = <1000000>;
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
-		regulator-ramp-delay = <8000>;
 		voltage-table = <800000 0>, <900000 8250>, <1000000 16500>, <1100000 25000>;
 		regulator-ramp-delay = <1000>;
 		regulator-always-on;
