@@ -1144,8 +1144,6 @@ reserved-memory {
 	operating-points-v2 = <&npu_opp_table>;
 	clocks = <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
 	clock-names = "clk", "aclk", "hclk";
-	interrupts = <GIC_SPI 150 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
-    interrupt-names = "npu_irq", "mmu";
     /delete-property/ nvmem-cells;
     /delete-property/ nvmem-cell-names;
 	rknpu-supply = <&vdd_npu>;
@@ -1153,7 +1151,7 @@ reserved-memory {
 };
 
 &rknpu_mmu {
-	status = "okay";
+	status = "disabled";
 };
 
 &bus_npu {
