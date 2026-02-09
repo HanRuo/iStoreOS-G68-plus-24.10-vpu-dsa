@@ -287,7 +287,7 @@ reserved-memory {
 		regulator-compatible = "vdd_npu";
 		regulator-min-microvolt = <800000>;
 		regulator-max-microvolt = <1100000>;
-		regulator-init-microvolt = <900000>;
+		regulator-init-microvolt = <1000000>;
 		regulator-settling-time-up-us = <250>;
 		regulator-enable-ramp-delay = <300>;
 
@@ -1137,19 +1137,26 @@ reserved-memory {
 };
 
 &rknpu {
+
+	reg = <0x0 0xfde40000 0x0 0x10000>;
+	interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+	interrupt-names = "npu_irq";
+
 	operating-points-v2 = <&npu_opp_table>;
 	clocks = <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
 	clock-names = "clk", "aclk", "hclk";
+
     /delete-property/ nvmem-cells;
     /delete-property/ nvmem-cell-names;
     rockchip,iommu-enabled = <0>; 
 	rknpu-supply = <&vdd_npu>;
+	iommus = <&rknpu_mmu>;
 	status = "okay";
 };
 
-/* &rknpu_mmu { */
-	/* status = "disabled"; */
-/* }; */
+&rknpu_mmu {
+	status = "okay";
+};
 
 &bus_npu {
 	operating-points-v2 = <&bus_npu_opp_table>;
