@@ -1146,9 +1146,9 @@ reserved-memory {
 	status = "okay";
 };
 
-/* &rknpu_mmu {
-	status = "disabled";
-}; */
+/* &rknpu_mmu { */
+	/* status = "disabled"; */
+/* }; */
 
 &bus_npu {
 	operating-points-v2 = <&bus_npu_opp_table>;
