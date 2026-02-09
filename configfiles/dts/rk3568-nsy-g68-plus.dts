@@ -515,11 +515,7 @@ reserved-memory {
 			opp-hz = /bits/ 64 <200000000>;
 			opp-microvolt = <800000>;
 		};
-		/* opp-300000000 {
-			/* opp-supported-hw = <0xfb 0xffff>; */
-			opp-hz = /bits/ 64 <297000000>; 
-			opp-microvolt = <850000>;
-		}; */
+
 		opp-400000000 {
 			/* opp-supported-hw = <0xfb 0xffff>; */
 			opp-hz = /bits/ 64 <400000000>;
