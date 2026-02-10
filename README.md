@@ -20,3 +20,10 @@
 ## 个人使用只编译G68路由器固件
 
 ## 2026年1月30日，新增VPU/GPU/NPU驱动
+
+## 2026年2月10日，修复NPU中断及电压问题，经测试可简单跑immich相册 
+root@iStoreOS:~# cat /proc/interrupts | grep -i npu
+ 65:        447          0          0          0     GICv3 183 Level     fde4b000.iommu, fde40000.npu
+root@iStoreOS:~# cat /proc/interrupts | grep -i npu
+ 65:        497          0          0          0     GICv3 183 Level     fde4b000.iommu, fde40000.npu
+root@iStoreOS:~#
