@@ -1136,11 +1136,6 @@ reserved-memory {
 	status = "okay";
 };
 
-&npu {
-    assigned-clocks = <&cru CLK_NPU>;
-    assigned-clock-rates = <400000000>;
-};
-
 &rknpu {
 
 	reg = <0x0 0xfde40000 0x0 0x10000>;
