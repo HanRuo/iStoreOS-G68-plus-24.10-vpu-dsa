@@ -185,7 +185,7 @@
 		clocks = <&scmi_clk 2>, <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
 		clock-names = "scmi_clk", "clk", "aclk", "hclk";
 		assigned-clocks = <&cru CLK_NPU>;
-		assigned-clock-rates = <600000000>;
+		assigned-clock-rates = <400000000>;
 		resets = <&cru SRST_A_NPU>, <&cru SRST_H_NPU>;
 		reset-names = "srst_a", "srst_h";
 		power-domains = <&power RK3568_PD_NPU>;
