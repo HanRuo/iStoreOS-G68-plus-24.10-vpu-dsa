@@ -1139,8 +1139,8 @@ reserved-memory {
 &rknpu {
 
 	reg = <0x0 0xfde40000 0x0 0x10000>;
-	/* interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>; */
-	/* interrupt-names = "npu_irq"; */
+	interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+	interrupt-names = "npu_irq";
 	operating-points-v2 = <&npu_opp_table>;
 	clocks = <&cru CLK_NPU>, <&cru ACLK_NPU>, <&cru HCLK_NPU>;
 	clock-names = "clk", "aclk", "hclk";
