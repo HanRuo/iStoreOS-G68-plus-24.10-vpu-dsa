@@ -31,3 +31,24 @@ CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_luci-app-store=y
 CONFIG_PACKAGE_luci-app-eqosplus=y
 CONFIG_PACKAGE_luci-i18n-eqosplus-zh-cn=y
+# ========== Turbo ACC 网络加速核心 ==========
+# 基础流量卸载（软件层）
+CONFIG_SHORTCUT_FE=y
+CONFIG_SHORTCUT_FE_CORE=y
+CONFIG_SHORTCUT_FE_IPTABLES=y
+CONFIG_SHORTCUT_FE_TCP_CONNTRACK=y
+CONFIG_NFT_OFFLOAD=y
+CONFIG_NETIFX_FLOW_OFFLOAD=y
+
+# 联发科 mtwifi 硬件 NAT 加速（关键，适配你的设备）
+CONFIG_MTK_HW_NAT=y
+CONFIG_MTK_FLOW_OFFLOAD=y
+
+# ========== LuCI 界面（可视化配置） ==========
+CONFIG_PACKAGE_luci-app-turboacc=y
+CONFIG_PACKAGE_luci-i18n-turboacc-zh-cn=y
+
+# ========== 依赖插件（Turbo ACC 运行必需） ==========
+CONFIG_PACKAGE_IPV6HELPERS=y
+CONFIG_PACKAGE_kmod-bpf=y
+CONFIG_PACKAGE_kmod-nft-offload=y
