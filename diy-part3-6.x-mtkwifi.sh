@@ -36,14 +36,6 @@ git clone --depth=1 -b main https://github.com/xiaomeng9597/istoreos-settings pa
 # 定时限速插件
 git clone --depth=1 https://github.com/sirpdboy/luci-app-eqosplus package/luci-app-eqosplus
 
-# ===============================================
-# 新增：自动安装 Turbo ACC 插件（关键步骤）
-# ===============================================
-echo "开始安装 Turbo ACC 网络加速插件..."
-# 拉取并执行 Turbo ACC 自动安装脚本（--no-sfe 禁用SFE，适配mtkwifi）
-curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh --no-sfe
-# 删除临时脚本，清理环境
-rm -f add_turboacc.sh
 
 # 增加nsy_g68-plus
 echo -e "\\ndefine Device/nsy_g68-plus
