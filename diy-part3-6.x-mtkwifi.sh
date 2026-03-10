@@ -76,7 +76,6 @@ chmod 755 package/base-files/files/etc/init.d/opwifi
 
 
 # 复制dts设备树文件到指定目录下
-cp -a $GITHUB_WORKSPACE/configfiles/dts/rk3568/* target/linux/rockchip/dts/rk3568/
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-nsy-g68-plus.dts target/linux/rockchip/dts/rk3568/rk3568-nsy-g68-plus.dts
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu.dtsi
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu-rk809.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu-rk809.dtsi
