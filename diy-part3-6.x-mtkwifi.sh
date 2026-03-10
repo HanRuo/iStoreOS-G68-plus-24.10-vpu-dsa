@@ -52,11 +52,18 @@ TARGET_DEVICES += nsy_g68-plus" >> target/linux/rockchip/image/legacy.mk
 rm -f target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 cp -f $GITHUB_WORKSPACE/configfiles/02_network target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
+cat "${GITHUB_WORKSPACE}/configfiles/config-6.6.local" >> target/linux/rockchip/armv8/config-6.6
+cat target/linux/rockchip/armv8/config-6.6
 
-# 加入初始化交换机脚本
-cp -f $GITHUB_WORKSPACE/configfiles/swconfig_install package/base-files/files/etc/init.d/swconfig_install
-chmod 755 package/base-files/files/etc/init.d/swconfig_install
+mkdir -p target/linux/rockchip/files/drivers/net/dsa
 
+cp -a $GITHUB_WORKSPACE/configfiles/userpatches/dsa/* target/linux/rockchip/files/drivers/net/dsa/
+chmod -R 775 target/linux/rockchip/files/drivers/net/dsa/
+ls target/linux/rockchip/files/drivers/net/dsa/
+
+
+cp -a $GITHUB_WORKSPACE/configfiles/userpatches/lede/* target/linux/rockchip/patches-6.6/
+ls target/linux/rockchip/patches-6.6/
 
 # 删除系统预留WiFi脚本，必须要删除
 [ -f "package/base-files/files/sbin/wifi" ] && rm -f package/base-files/files/sbin/wifi
@@ -68,13 +75,8 @@ chmod 755 package/base-files/files/etc/init.d/opwifi
 # chmod 755 package/base-files/files/etc/init.d/g68_mtkwifi
 
 
-# rtl8367b驱动资源包，暂时使用这样替换
-wget https://github.com/xiaomeng9597/files/releases/download/files/rtl8367b.tar.gz
-tar -xvf rtl8367b.tar.gz
-
-
 # 复制dts设备树文件到指定目录下
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3588-orangepi-5-plus.dts target/linux/rockchip/dts/rk3588/rk3588-orangepi-5-plus.dts
+cp -a $GITHUB_WORKSPACE/configfiles/dts/rk3568/* target/linux/rockchip/dts/rk3568/
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-nsy-g68-plus.dts target/linux/rockchip/dts/rk3568/rk3568-nsy-g68-plus.dts
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu.dtsi
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu-rk809.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu-rk809.dtsi
