@@ -383,7 +383,7 @@ reserved-memory {
 		mii-bus = <&mdio0>;
 		realtek,id = <29>;
 		phy-id = <29>;
-		cpu_port = <6 7>;
+		cpu_port = <7>;
 
 		//txdelay, rxdelay, mode, ability.force_mode, ability.txpause, ability.rxpause, ability.link, ability.duplex, speed
 		//sgmii,
@@ -889,17 +889,116 @@ reserved-memory {
 };
 
 &mdio0 {
-	status = "okay";
+    compatible = "snps,dwmac-mdio";
+    #address-cells = <1>;
+    #size-cells = <0>;
+    status = "okay";
+
+    rtl8367s: switch@29 {
+        compatible = "realtek,rtl8365mb";
+        reg = <29>;
+        status = "okay";
+
+        reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
+        pinctrl-names = "default";
+        reset-assert-us = <20000>;
+        reset-deassert-us = <100000>;
+        pinctrl-0 = <&gmac0_reset>;
+
+        mdio {
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            phy0: ethernet-phy@0 { reg = <0>; };
+            phy1: ethernet-phy@1 { reg = <1>; };
+            phy2: ethernet-phy@2 { reg = <2>; };
+            phy3: ethernet-phy@3 { reg = <3>; };
+            phy4: ethernet-phy@4 { reg = <4>; };
+        };
+
+        ports {
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            /* LAN 端口保持绑定到默认的 CPU 端口 (gmac0) */
+            port@0 {
+                reg = <0>;
+                label = "lan1";
+                phy-handle = <&phy0>;
+                local-mac-address = [46 27 be 7a c9 1d];
+            };
+
+            port@1 {
+                reg = <1>;
+                label = "lan2";
+                phy-handle = <&phy1>;
+                local-mac-address = [46 27 be 7a c9 1e];
+            };
+
+            port@2 {
+                reg = <2>;
+                label = "lan3";
+                phy-handle = <&phy2>;
+                local-mac-address = [46 27 be 7a c9 1f];
+            };
+
+            port@3 {
+                reg = <3>;
+                label = "lan4";
+                phy-handle = <&phy3>;
+                local-mac-address = [46 27 be 7a ca 00];
+            };
+
+            /* WAN 端口：关键修改！显式指向 gmac1 (eth1) */
+            port@4 {
+                reg = <4>;
+                label = "wan";
+                phy-handle = <&phy4>;
+                ethernet = <&gmac1>;  /* 强制流量走第二条臂 */
+                local-mac-address = [46 27 be 7a ca 01];
+            };
+
+            /* 第一条 CPU 臂：RGMII 连接到 gmac0 (eth0) */
+            port@7 {
+                reg = <7>;
+                label = "cpu";
+                ethernet = <&gmac0>;
+                phy-mode = "rgmii-id";
+                rx-internal-delay-ps = <2000>;
+                tx-internal-delay-ps = <2000>;
+                local-mac-address = [46 27 be 7a ca 02];
+
+                fixed-link {
+                    speed = <1000>;
+                    full-duplex;
+                };
+            };
+
+            /* 第二条 CPU 臂：SGMII 连接到 gmac1 (eth1) */
+            port@6 {
+                reg = <6>;
+                label = "cpu";
+                ethernet = <&gmac1>;
+                phy-mode = "sgmii";   /* 必须与 gmac1 模式一致 */
+                
+                fixed-link {
+                    speed = <1000>;
+                    full-duplex;
+                };
+            };
+        };
+    };
 };
+
 
 &gmac0 {
 	status = "okay";
-	phy-mode = "rgmii";
-	snps,reset-gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
-	snps,reset-active-low;
-	snps,reset-delays-us = <0 20000 100000>;
+	phy-mode = "rgmii-id";
+	//snps,reset-gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
+	//snps,reset-active-low;
+	//snps,reset-delays-us = <0 20000 100000>;
 	assigned-clocks = <&cru SCLK_GMAC0_RX_TX &cru SCLK_GMAC0>;
-	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED>;
+	assigned-clock-parents = <&cru SCLK_GMAC0_RGMII_SPEED &cru CLK_MAC0_2TOP>;
 	assigned-clock-rates = <0 125000000>;
 	tx_delay = <0x3f>;
 	rx_delay = <0x2c>;
@@ -934,9 +1033,9 @@ reserved-memory {
 	phy-mode = "sgmii";
 	rockchip,pipegrf = <&pipegrf>;
 	rockchip,xpcs = <&xpcs>;
-	//snps,reset-gpio = <&gpio2 RK_PC2 GPIO_ACTIVE_LOW>;
-	//snps,reset-active-low;
-	//snps,reset-delays-us = <0 20000 100000>;
+	snps,reset-gpio = <&gpio2 RK_PC2 GPIO_ACTIVE_LOW>;
+	snps,reset-active-low;
+	snps,reset-delays-us = <0 20000 100000>;
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>;
 	assigned-clock-parents = <&gmac1_xpcsclk>;
 	pinctrl-names = "default";
@@ -946,7 +1045,6 @@ reserved-memory {
 	fixed-link {
 		speed = <1000>;
 		full-duplex;
-		pause;
 	};
 };
 
