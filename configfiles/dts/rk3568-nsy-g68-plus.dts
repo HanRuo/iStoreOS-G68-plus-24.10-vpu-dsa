@@ -968,7 +968,7 @@ reserved-memory {
         reset-deassert-us = <100000>;
         pinctrl-0 = <&gmac0_reset>;
 
-        mdio {
+        mdio_bus {
             #address-cells = <1>;
             #size-cells = <0>;
 
