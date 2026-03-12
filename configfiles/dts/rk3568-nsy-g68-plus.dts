@@ -375,6 +375,66 @@ reserved-memory {
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_power_en>;
 		};
+    // 新增 WAN LED 配置
+    led-wan {
+        label = "led-wan";
+        default-state = "off";
+        gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>; // NSY-G68 WAN LED 通用引脚
+        linux,default-trigger = "netdev";
+        netdev-name = "wan";
+        netdev-mode = "link tx rx";
+        pinctrl-names = "default";
+        pinctrl-0 = <&led_wan_en>;
+		};
+
+    // 新增 LAN1 LED 配置
+    led-lan1 {
+        label = "led-lan1";
+        default-state = "off";
+        gpios = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>; // NSY-G68 LAN1 LED 通用引脚
+        linux,default-trigger = "netdev";
+        netdev-name = "lan1";
+        netdev-mode = "link tx rx";
+        pinctrl-names = "default";
+        pinctrl-0 = <&led_lan1_en>;
+		};
+
+    // 新增 LAN2 LED 配置
+    led-lan2 {
+        label = "led-lan2";
+        default-state = "off";
+        gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>; // NSY-G68 LAN2 LED 通用引脚
+        linux,default-trigger = "netdev";
+        netdev-name = "lan2";
+        netdev-mode = "link tx rx";
+        pinctrl-names = "default";
+        pinctrl-0 = <&led_lan2_en>;
+		};
+
+    // 新增 LAN3 LED 配置
+    led-lan3 {
+        label = "led-lan3";
+        default-state = "off";
+        gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>; // NSY-G68 LAN3 LED 通用引脚
+        linux,default-trigger = "netdev";
+        netdev-name = "lan3";
+        netdev-mode = "link tx rx";
+        pinctrl-names = "default";
+        pinctrl-0 = <&led_lan3_en>;
+		};
+
+    // 新增 LAN4 LED 配置
+    led-lan4 {
+        label = "led-lan4";
+        default-state = "off";
+        gpios = <&gpio0 RK_PD0 GPIO_ACTIVE_HIGH>; // NSY-G68 LAN4 LED 通用引脚
+        linux,default-trigger = "netdev";
+        netdev-name = "lan4";
+        netdev-mode = "link tx rx";
+        pinctrl-names = "default";
+        pinctrl-0 = <&led_lan4_en>;
+		};
+
 	};
 
 
@@ -799,6 +859,26 @@ reserved-memory {
 	leds {
 		led_power_en: led-power-en {
 			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    // 新增 WAN LED 引脚
+    led_wan_en: led-wan-en {
+        rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    // 新增 LAN1 LED 引脚
+    led_lan1_en: led-lan1-en {
+        rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    // 新增 LAN2 LED 引脚
+    led_lan2_en: led-lan2-en {
+        rockchip,pins = <0 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    // 新增 LAN3 LED 引脚
+    led_lan3_en: led-lan3-en {
+        rockchip,pins = <0 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+    // 新增 LAN4 LED 引脚
+    led_lan4_en: led-lan4-en {
+        rockchip,pins = <0 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 };
