@@ -39,7 +39,10 @@ jobs:
           - ubuntu-22.04
 
       fail-fast: false
-
+    # ======================== 关键修改：添加这一段 env 配置 ========================
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    # ============================================================================
     steps:
     - name: 合并磁盘
       uses: easimon/maximize-build-space@master
