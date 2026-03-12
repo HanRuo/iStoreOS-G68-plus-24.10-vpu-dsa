@@ -1106,7 +1106,7 @@ reserved-memory {
 	assigned-clock-rates = <0 125000000>;
 	clock_in_out = "output";
 	pinctrl-names = "default";
-	pinctrl-0 = <&gmac1_miim &gmac1_tx_bus2 &gmac1_rx_bus2 &gmac1_rgmii_clk &gmac1_rgmii_bus>;
+	pinctrl-0 = <&gmac1m1_miim &gmac1m1_tx_bus2 &gmac1m1_rx_bus2 &gmac1m1_rgmii_clk &gmac1m1_rgmii_bus>;
 	fixed-link {
 		speed = <1000>;
 		full-duplex;
