@@ -43,9 +43,7 @@ rockchip_setup_interfaces()
 		ucidef_set_interfaces_lan_wan 'lan1 lan2 lan3 lan4' 'eth0'
 		;;
 	nsy,g68-plus)
-		ucidef_add_switch "switch0" \
-				"0:lan" "1:lan" "2:lan" "3:lan" "6t@eth1" "7t@eth0"
-		ucidef_set_interfaces_lan_wan "switch0.1" "switch0.2"
+		ucidef_set_interfaces_lan_wan 'lan1 lan2 lan3 lan4' 'wan'
 		;;
 	hinlink,h88k-v3|\
 	hinlink,opc-h69k|\
