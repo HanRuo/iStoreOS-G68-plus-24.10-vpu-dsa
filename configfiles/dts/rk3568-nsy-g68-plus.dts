@@ -1086,16 +1086,18 @@ reserved-memory {
 
 &gmac1 {
 	status = "okay";
-	phy-mode = "rgmii-id";
-	//snps,reset-gpio = <&gpio2 RK_PC2 GPIO_ACTIVE_LOW>;
-	//snps,reset-active-low;
-	//snps,reset-delays-us = <0 20000 100000>;
-	assigned-clocks = <&cru SCLK_GMAC1_RX_TX &cru SCLK_GMAC1>;
-	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED &cru CLK_MAC1_2TOP>;
-	assigned-clock-rates = <0 125000000>;
-	clock_in_out = "output";
+	phy-mode = "sgmii";
+	rockchip,xpcs = <&xpcs>;
+	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>;
+	assigned-clock-parents = <&gmac1_xpcsclk>;
 	pinctrl-names = "default";
-	pinctrl-0 = <&gmac1m1_miim &gmac1m1_tx_bus2 &gmac1m1_rx_bus2 &gmac1m1_rgmii_clk &gmac1m1_rgmii_bus>;
+	pinctrl-0 = <&gmac1m1_miim>;
+	power-domains = <&power RK3568_PD_PIPE>;
+	phys = <&combphy1 PHY_TYPE_SGMII>;
+	
+	// 关键：GMAC1也要管理交换机MDIO
+	mdio = <&mdio0>;
+	
 	fixed-link {
 		speed = <1000>;
 		full-duplex;
