@@ -961,14 +961,13 @@ reserved-memory {
     rtl8367s: switch@29 {
         compatible = "realtek,rtl8365mb";
         reg = <29>;
-
         reset-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
         pinctrl-names = "default";
         reset-assert-us = <20000>;
         reset-deassert-us = <100000>;
         pinctrl-0 = <&gmac0_reset>;
 
-        mdio_bus {
+        mdio {
             #address-cells = <1>;
             #size-cells = <0>;
 
@@ -986,10 +985,6 @@ reserved-memory {
 
             phy3: ethernet-phy@3 {
                 reg = <3>;
-            };
-
-            phy4: ethernet-phy@4 {
-                reg = <4>;
             };
         };
 
@@ -1025,20 +1020,14 @@ reserved-memory {
                 local-mac-address = [46 27 be 7a ca 00];
             };
 
-            port@4 {
-                reg = <4>;
-                label = "wan";
-                phy-handle = <&phy4>;
-                local-mac-address = [46 27 be 7a ca 01];
-            };
             // CPU 端口 6：绑定 gmac1（承载 LAN 流量）
             port@6 {
                 reg = <6>;
                 label = "cpu1";
                 ethernet = <&gmac1>;
-                phy-mode = "rgmii-id";
-                rx-internal-delay-ps = <2000>;
-                tx-internal-delay-ps = <2000>;
+                phy-mode = "sgmii";
+               /* rx-internal-delay-ps = <2000>; */
+               /* tx-internal-delay-ps = <2000>; */
                 fixed-link { speed = <1000>; full-duplex; };
             };
             port@7 {
