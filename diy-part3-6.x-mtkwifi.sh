@@ -36,6 +36,16 @@ git clone --depth=1 -b main https://github.com/xiaomeng9597/istoreos-settings pa
 # 定时限速插件
 git clone --depth=1 https://github.com/sirpdboy/luci-app-eqosplus package/luci-app-eqosplus
 
+# 增加bendian_bd-one
+echo -e "\\ndefine Device/bendian_bd-one
+\$(call Device/Legacy/rk3568,\$(1))
+  DEVICE_VENDOR := BENDIAN
+  DEVICE_MODEL := BD ONE
+  DEVICE_DTS := rk3568/rk3568-bendian-bd-one
+  DEVICE_PACKAGES += kmod-nvme kmod-ata-ahci-dwc kmod-hwmon-pwmfan kmod-thermal kmod-r8169
+endef
+TARGET_DEVICES += bendian_bd-one" >> target/linux/rockchip/image/legacy.mk
+
 
 # 增加nsy_g68-plus
 echo -e "\\ndefine Device/nsy_g68-plus
@@ -53,9 +63,19 @@ rm -f target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 cp -f $GITHUB_WORKSPACE/configfiles/02_network target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
 
-# 加入初始化交换机脚本
-cp -f $GITHUB_WORKSPACE/configfiles/swconfig_install package/base-files/files/etc/init.d/swconfig_install
-chmod 755 package/base-files/files/etc/init.d/swconfig_install
+cat "${GITHUB_WORKSPACE}/configfiles/config-6.6.local" >> target/linux/rockchip/armv8/config-6.6
+cat target/linux/rockchip/armv8/config-6.6
+
+
+# target/linux/rockchip/files/drivers/net/
+mkdir -p target/linux/rockchip/files/drivers/net/dsa
+cp -a $GITHUB_WORKSPACE/configfiles/userpatches/dsa/* target/linux/rockchip/files/drivers/net/dsa/
+chmod -R 775 target/linux/rockchip/files/drivers/net/dsa/
+ls target/linux/rockchip/files/drivers/net/dsa/
+
+
+cp -a $GITHUB_WORKSPACE/configfiles/userpatches/lede/* target/linux/rockchip/patches-6.6/
+ls target/linux/rockchip/patches-6.6/
 
 
 # 删除系统预留WiFi脚本，必须要删除
@@ -67,10 +87,6 @@ chmod 755 package/base-files/files/etc/init.d/opwifi
 # cp -f $GITHUB_WORKSPACE/configfiles/g68_mtkwifi package/base-files/files/etc/init.d/g68_mtkwifi
 # chmod 755 package/base-files/files/etc/init.d/g68_mtkwifi
 
-
-# rtl8367b驱动资源包，暂时使用这样替换
-wget https://github.com/xiaomeng9597/files/releases/download/files/rtl8367b.tar.gz
-tar -xvf rtl8367b.tar.gz
 
 
 # 复制dts设备树文件到指定目录下
