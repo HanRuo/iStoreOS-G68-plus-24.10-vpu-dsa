@@ -43,7 +43,24 @@ rockchip_setup_interfaces()
 		ucidef_set_interfaces_lan_wan 'lan1 lan2 lan3 lan4' 'eth0'
 		;;
 	nsy,g68-plus)
-		ucidef_set_interfaces_lan_wan 'lan1 lan2 lan3 lan4' 'wan'
+		ucidef_set_interfaces_lan_wan 'lan1 lan2 lan3 lan4' 'eth0'
+
+		uci -q batch << EOF
+		set network.lan.type='bridge'
+		set network.lan.device='br-lan'
+		set network.lan.proto='static'
+		set network.lan.ipaddr='192.168.100.1'
+		set network.lan.netmask='255.255.255.0'
+		set network.lan.proxy_arp='1'                # 核心：让 br-lan 代理 ARP
+		set network.lan.igmp_snooping='0'            # 关闭组播侦听，避免 ARP 被丢
+		set network.lan.multicast_to_unicast='0'
+		set network.lan.send_redirects='0'
+		set network.@device[0].name='br-lan'
+		set network.@device[0].type='bridge'
+		set network.@device[0].ports='lan1 lan2 lan3 lan4'
+		set network.@device[0].proxy_arp='1'
+		commit network
+EOF
 		;;
 	hinlink,h88k-v3|\
 	hinlink,opc-h69k|\
