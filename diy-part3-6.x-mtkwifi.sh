@@ -36,16 +36,6 @@ git clone --depth=1 -b main https://github.com/xiaomeng9597/istoreos-settings pa
 # 定时限速插件
 git clone --depth=1 https://github.com/sirpdboy/luci-app-eqosplus package/luci-app-eqosplus
 
-# 增加bendian_bd-one
-echo -e "\\ndefine Device/bendian_bd-one
-\$(call Device/Legacy/rk3568,\$(1))
-  DEVICE_VENDOR := BENDIAN
-  DEVICE_MODEL := BD ONE
-  DEVICE_DTS := rk3568/rk3568-bendian-bd-one
-  DEVICE_PACKAGES += kmod-nvme kmod-ata-ahci-dwc kmod-hwmon-pwmfan kmod-thermal kmod-r8169
-endef
-TARGET_DEVICES += bendian_bd-one" >> target/linux/rockchip/image/legacy.mk
-
 
 # 增加nsy_g68-plus
 echo -e "\\ndefine Device/nsy_g68-plus
@@ -90,7 +80,6 @@ chmod 755 package/base-files/files/etc/init.d/opwifi
 
 
 # 复制dts设备树文件到指定目录下
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3588-orangepi-5-plus.dts target/linux/rockchip/dts/rk3588/rk3588-orangepi-5-plus.dts
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-nsy-g68-plus.dts target/linux/rockchip/dts/rk3568/rk3568-nsy-g68-plus.dts
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu.dtsi
 cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-vngpu-rk809.dtsi target/linux/rockchip/dts/rk3568/rk3568-vngpu-rk809.dtsi
