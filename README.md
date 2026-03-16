@@ -27,3 +27,5 @@ root@iStoreOS:~# cat /proc/interrupts | grep -i npu
 
 root@iStoreOS:~# cat /proc/interrupts | grep -i npu
  65:        497          0          0          0     GICv3 183 Level     fde4b000.iommu, fde40000.npu
+
+ 作废，包请勿下载使用
